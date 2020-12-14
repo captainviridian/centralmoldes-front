@@ -14,6 +14,7 @@ import {
   Home,
   ForgotPassword,
   Search,
+  Checkout,
   Logout,
 } from './pages';
 
@@ -29,6 +30,7 @@ ReactDOM.render(
           <Route path="/forgot-password"><ForgotPassword /></Route>
           <Route path="/logout"><Logout /></Route>
           <Route path="/buy"><Search /></Route>
+          <Route path="/checkout"><Checkout /></Route>
         </Switch>
       </Template>
     </BrowserRouter>

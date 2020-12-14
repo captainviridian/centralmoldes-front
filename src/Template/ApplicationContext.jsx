@@ -1,16 +1,24 @@
-import { LoggedUserContext, LoginContext, MessageContext } from 'context';
+import {
+  CheckoutContext, LoadingContext, LoggedUserContext, MessageContext,
+} from 'context';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 function ApplicationContext({
   loggedUser,
   sendMessage,
+  loading,
+  checkout,
   children,
 }) {
   return (
     <LoggedUserContext.Provider value={loggedUser}>
       <MessageContext.Provider value={sendMessage}>
-        {children}
+        <LoadingContext.Provider value={loading}>
+          <CheckoutContext.Provider value={checkout}>
+            {children}
+          </CheckoutContext.Provider>
+        </LoadingContext.Provider>
       </MessageContext.Provider>
     </LoggedUserContext.Provider>
   );

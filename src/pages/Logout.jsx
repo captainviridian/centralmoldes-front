@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import getStorage, { setSession } from 'utils/storage';
 
 function Logout() {
+  getStorage().removeItem('token');
   getStorage().removeItem('loggedUser');
   setSession();
 

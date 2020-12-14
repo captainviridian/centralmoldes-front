@@ -15,8 +15,8 @@ import { email, required } from 'utils/validation';
 import {
   RFTextField, FormButton, FormFeedback, Checkbox,
 } from 'components/form';
-import { postLogin } from 'connection/user';
-import { MessageContext } from 'context';
+import { getInfo, postLogin } from 'connection/user';
+import { CheckoutContext, MessageContext } from 'context';
 import getStorage, { setLocal } from 'utils/storage';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function doLogin(user) {
+async function doLogin(token, username) {
+  getStorage().setItem('token', token);
+  const user = await getInfo(username);
   getStorage().setItem('loggedUser', JSON.stringify(user));
 }
 
@@ -46,6 +48,7 @@ function SignIn() {
   const classes = useStyles();
 
   const sendMessage = useContext(MessageContext);
+  const { item } = useContext(CheckoutContext);
 
   const history = useHistory();
 
@@ -67,13 +70,15 @@ function SignIn() {
       username, password,
     };
 
-    const res = await postLogin(body);
+    const { token } = await postLogin(body);
 
-    if (res) {
+    if (token) {
       if (keepSignedIn) setLocal();
 
-      doLogin(res);
-      history.push('/');
+      doLogin(token, username);
+
+      if (item) history.push('/checkout');
+      else history.push('/');
     } else {
       sendMessage('Um erro ocorreu. Tente novamente.');
     }

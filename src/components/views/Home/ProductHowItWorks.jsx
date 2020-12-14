@@ -10,7 +10,7 @@ import productCurvyLines from 'assets/productCurvyLines.png';
 import { CallToAction } from 'components/Home';
 
 import {
-  ShoppingCartOutlined as CartIcon,
+  ShoppingCartOutlined as CheckoutIcon,
   CloudDownloadOutlined as DonwloadIcon,
   CheckCircleOutlineOutlined as CheckIcon,
 } from '@material-ui/icons';
@@ -62,7 +62,7 @@ const styles = (theme) => ({
 
 const steps = [
   {
-    Icon: CartIcon,
+    Icon: CheckoutIcon,
     text: 'Escolha os moldes para sua nova roupa.',
   },
   {

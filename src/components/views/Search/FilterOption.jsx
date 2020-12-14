@@ -4,28 +4,37 @@ import PropTypes from 'prop-types';
 import { Close as CloseIcon } from '@material-ui/icons';
 
 import {
-  Chip, Container, Grid, IconButton, makeStyles, Popover,
+  Chip, Container, Divider, Grid, IconButton, makeStyles, Popover, Button, Checkbox,
 } from '@material-ui/core';
 import { Toolbar, Typography } from 'components/base';
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    overflowY: 'hidden',
+  },
   popover: {
+    marginTop: theme.spacing(2),
     // height: `calc(100vh - ${theme.spacing.headerSize * 2}px)`,
   },
   content: {
     width: '100vh',
     padding: theme.spacing(3),
+    maxHeight: '80vh',
+    overflowY: 'auto',
   },
-  toolbar: {
+  header: {
     justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(0, 3),
+      padding: theme.spacing(0, 1, 0, 2.5),
     },
+  },
+  options: {
+    padding: theme.spacing(1),
   },
 }));
 
 function Option({
-  text, options, setSelected,
+  text, options, applyOptions,
 }) {
   const [anchor, setAnchor] = useState(null);
   const open = !!anchor;
@@ -35,6 +44,23 @@ function Option({
 
   const classes = useStyles();
 
+  const [selected, setSelected] = useState([]);
+
+  function handleChangeCheckOption({ target: { value, checked } }) {
+    setSelected(checked ? [...selected, value] : selected.filter((el) => el !== value));
+  }
+
+  function clearSelected() {
+    setSelected([]);
+    close();
+    applyOptions([]);
+  }
+
+  function handleSubmit() {
+    close();
+    applyOptions(selected);
+  }
+
   return (
     <>
       <Grid item>
@@ -42,13 +68,16 @@ function Option({
           label={text}
           variant="outlined"
           onClick={(e) => {
-            setAnchor(e.currentTarget.parentNode.parentNode.parentNode);
+            setAnchor(e.currentTarget.parentNode);
           }}
         />
       </Grid>
       <Popover
         open={open}
         className={classes.popover}
+        classes={{
+          paper: classes.paper,
+        }}
         onClose={close}
         anchorEl={anchor}
         anchorOrigin={{
@@ -60,8 +89,8 @@ function Option({
           horizontal: 'center',
         }}
       >
-        <Toolbar className={classes.toolbar}>
-          <Typography>
+        <Toolbar className={classes.header}>
+          <Typography variant="h5">
             {text}
           </Typography>
           <IconButton onClick={close}>
@@ -69,10 +98,35 @@ function Option({
           </IconButton>
         </Toolbar>
         <Container maxWidth="xs" className={classes.content}>
-          <Grid container direction="column" spacing={3}>
-            <Grid item>Opções</Grid>
+          <Grid container spacing={3}>
+            {options.map(({ option, label }) => (
+              <Grid key={option} item>
+                <Checkbox
+                  value={option}
+                  color="secondary"
+                  onChange={handleChangeCheckOption}
+                  checked={selected.includes(option)}
+                />
+                {label}
+              </Grid>
+            ))}
           </Grid>
         </Container>
+        <Divider />
+        <Grid container className={classes.options} justify="flex-end" spacing={2}>
+          <Grid item>
+            <Button
+              onClick={clearSelected}
+              color="primary"
+              variant="outlined"
+            >
+              Limpar
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button onClick={handleSubmit} color="primary" variant="contained">Aplicar</Button>
+          </Grid>
+        </Grid>
       </Popover>
     </>
   );
@@ -80,8 +134,11 @@ function Option({
 
 Option.propTypes = {
   text: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setSelected: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    option: PropTypes.string,
+    label: PropTypes.string,
+  })).isRequired,
+  applyOptions: PropTypes.func.isRequired,
 };
 
 export default Option;

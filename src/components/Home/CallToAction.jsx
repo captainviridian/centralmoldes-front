@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Button } from 'components/base';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   button: {
     minWidth: 200,
   },

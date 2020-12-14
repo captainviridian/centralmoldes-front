@@ -23,7 +23,11 @@ export const seller = [
 
 export const buyer = [
   {
-    to: '/cart',
+    to: '/buy',
+    text: 'Comprar',
+  },
+  {
+    to: '/checkout',
     text: 'Meu carrinho',
   },
   {

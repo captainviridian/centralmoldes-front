@@ -40,6 +40,10 @@ function Template({ children }) {
 
   const [infoMessage, setInfoMessage] = useState(null);
 
+  const [item, setItem] = useState(null);
+
+  // const [loading, setLoading] = useState(false);
+
   function openDrawableMenu() {
     setMenuOpen(true);
   }
@@ -73,6 +77,13 @@ function Template({ children }) {
     <ApplicationContext
       loggedUser={loggedUser}
       sendMessage={(message) => setInfoMessage(message)}
+      checkout={{
+        item,
+        setItem: (id) => {
+          setItem(id);
+          getStorage().setItem('cart', id);
+        },
+      }}
     >
       <CssBaseline />
       <DrawableMenu
@@ -80,7 +91,7 @@ function Template({ children }) {
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
         onOpen={openDrawableMenu}
-        title={loggedUser && `Bem-vinda(o) ${loggedUser.first_name}`}
+        title={loggedUser && `Bem-vinda(o), ${loggedUser.first_name}`}
       />
       <Header menuOptions={menuOptions} onClickMenuButton={openDrawableMenu} />
       <main className={classes.content}>
@@ -92,6 +103,8 @@ function Template({ children }) {
         onClose={() => setInfoMessage(null)}
         open={Boolean(infoMessage)}
       />
+
+      {/* <CircularProgress /> */}
     </ApplicationContext>
   );
 }

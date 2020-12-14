@@ -16,7 +16,7 @@ import { email, required } from 'utils/validation';
 import { RFTextField, FormButton, FormFeedback } from 'components/form';
 
 import { postUser } from 'connection/user';
-import { MessageContext } from 'context';
+import { CheckoutContext, MessageContext } from 'context';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -41,6 +41,7 @@ function SignUp() {
   const classes = useStyles();
 
   const sendMessage = useContext(MessageContext);
+  const { item } = useContext(CheckoutContext);
 
   const history = useHistory();
   const { pathname } = useLocation();
@@ -80,7 +81,9 @@ function SignUp() {
 
     if (res) {
       sendMessage('Conta criada! Faça login para continuar.');
-      history.push('/sign-in');
+
+      if (item) history.push('/checkout');
+      else history.push('/sign-in');
     } else {
       sendMessage('Um erro ocorreu. Tente novamente.');
     }
@@ -94,6 +97,12 @@ function SignUp() {
             <>
               <Typography variant="h3" gutterBottom marked="center" align="center">
                 Crie sua conta CM
+              </Typography>
+              <Typography variant="body2" align="center">
+                {'Já possui uma conta? '}
+                <Link to="sign-in" className={classes.link}>
+                  Fazer Login
+                </Link>
               </Typography>
               <Typography variant="body2" align="center">
                 {'Gostaria de vender os seus moldes? '}

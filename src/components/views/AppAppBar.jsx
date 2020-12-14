@@ -36,7 +36,7 @@ const styles = (theme) => ({
 });
 
 function AppAppBar({ classes, menuOptions, onClickMenuButton }) {
-  const big = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const big = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   return (
     <div>
