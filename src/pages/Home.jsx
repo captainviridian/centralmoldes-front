@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useContext } from 'react';
 
 import {
@@ -14,12 +15,13 @@ function Home() {
   const loggedUser = useContext(LoggedUserContext);
 
   return loggedUser !== null
-    ? <Redirect to="/buy" />
+    ? loggedUser.tipo === 'buyer'
+      ? <Redirect to="/buy" />
+      : <Redirect to="/my-patterns" />
     : (
       <>
         <ProductHero />
         <ProductHowItWorks />
-        {// <ProductValues />
       }
         <ProductCTA />
         <ProductSmokingHero />

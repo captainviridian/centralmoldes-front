@@ -16,6 +16,7 @@ import {
   Search,
   Checkout,
   Logout,
+  MyPatterns,
 } from './pages';
 
 ReactDOM.render(
@@ -31,6 +32,7 @@ ReactDOM.render(
           <Route path="/logout"><Logout /></Route>
           <Route path="/buy"><Search /></Route>
           <Route path="/checkout"><Checkout /></Route>
+          <Route path="/my-patterns"><MyPatterns /></Route>
         </Switch>
       </Template>
     </BrowserRouter>

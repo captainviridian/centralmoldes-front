@@ -75,7 +75,7 @@ function SignIn() {
     if (token) {
       if (keepSignedIn) setLocal();
 
-      doLogin(token, username);
+      await doLogin(token, username);
 
       if (item) history.push('/checkout');
       else history.push('/');

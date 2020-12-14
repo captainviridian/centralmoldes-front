@@ -48,25 +48,10 @@ function PieceCard({
     foto,
     id,
   },
+  showMore,
+  action,
 }) {
   const classes = useStyles();
-
-  const { setItem } = useContext(CheckoutContext);
-  const isLogged = !!useContext(LoggedUserContext);
-
-  const sendMessage = useContext(MessageContext);
-
-  const history = useHistory();
-
-  function handleClickBuy() {
-    setItem(id);
-
-    if (isLogged) history.push('/checkout');
-    else {
-      sendMessage('Faça seu cadastro para continuar');
-      history.push('/buyer-sign-up');
-    }
-  }
 
   return (
     <Grid item xs={12} sm={6} md={3} className={classes.item}>
@@ -82,7 +67,7 @@ function PieceCard({
               <Typography variant="subtitle2">{`R$ ${preco.replace('.', ',')}`}</Typography>
             </Grid>
             <Grid item container spacing={1}>
-              {tags.map((tag) => (
+              {tags && tags.map((tag) => (
                 <Grid key={tag} item>
                   <Chip color="secondary" label={`#${tag}`} />
                 </Grid>
@@ -91,8 +76,8 @@ function PieceCard({
           </Grid>
         </CardContent>
         <CardActions className={classes.actions}>
-          <Button>Saiba mais</Button>
-          <Button onClick={handleClickBuy} variant="outlined">Comprar</Button>
+          {showMore && <Button>Saiba mais</Button>}
+          <Button onClick={() => action.onClick({ id })} variant="outlined">{action.text}</Button>
         </CardActions>
       </Card>
     </Grid>
@@ -107,6 +92,11 @@ PieceCard.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.string),
     foto: PropTypes.string,
     id: PropTypes.number,
+  }).isRequired,
+  showMore: PropTypes.bool,
+  action: PropTypes.shape({
+    onClick: PropTypes.func,
+    text: PropTypes.string,
   }).isRequired,
 };
 

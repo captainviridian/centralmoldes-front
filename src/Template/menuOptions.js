@@ -19,6 +19,19 @@ export const notLogged = [
 ];
 
 export const seller = [
+  {
+    to: '/sell',
+    text: 'Vender',
+  },
+  {
+    to: '/my-patterns',
+    text: 'Meus moldes',
+    featured: true,
+  },
+  {
+    to: '/logout',
+    text: 'Sair',
+  },
 ];
 
 export const buyer = [

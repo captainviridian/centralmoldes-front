@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import Filters from 'components/views/Search/Filters';
 import { getPieces } from 'connection/piece';
@@ -6,6 +6,8 @@ import {
   Container, Grid, makeStyles,
 } from '@material-ui/core';
 import PieceCard from 'components/views/Search/PieceCard';
+import { CheckoutContext, LoggedUserContext, MessageContext } from 'context';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -19,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
 
 function Search() {
   const classes = useStyles();
+
+  const { setItem } = useContext(CheckoutContext);
+  const isLogged = !!useContext(LoggedUserContext);
+
+  const sendMessage = useContext(MessageContext);
+
+  const history = useHistory();
 
   const [allPieces, setAllPieces] = useState([]);
   const [pieces, setPieces] = useState([]);
@@ -59,6 +68,16 @@ function Search() {
     fetchPieces();
   }, []);
 
+  function handleClickBuy(piece) {
+    setItem(piece.id);
+
+    if (isLogged) history.push('/checkout');
+    else {
+      sendMessage('Faça seu cadastro para continuar');
+      history.push('/buyer-sign-up');
+    }
+  }
+
   useEffect(() => {
     setFilterOptions({
       ...filterOptions,
@@ -93,6 +112,11 @@ function Search() {
             <PieceCard
               piece={piece}
               key={piece.id}
+              showMore
+              action={{
+                onClick: handleClickBuy,
+                text: 'Comprar',
+              }}
             />
           ))}
         </Grid>

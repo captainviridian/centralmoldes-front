@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+./cors/node_modules
+
 # testing
 /coverage
 
