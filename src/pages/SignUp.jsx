@@ -82,8 +82,7 @@ function SignUp() {
     if (res) {
       sendMessage('Conta criada! Faça login para continuar.');
 
-      if (item) history.push('/checkout');
-      else history.push('/sign-in');
+      history.push('/sign-in');
     } else {
       sendMessage('Um erro ocorreu. Tente novamente.');
     }

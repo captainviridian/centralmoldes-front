@@ -61,7 +61,7 @@ function Template({ children }) {
       const { notLogged, seller, buyer } = await import('./menuOptions');
 
       if (!loggedUser) setMenuOptions(notLogged);
-      else if (loggedUser.type === 'seller') setMenuOptions(seller);
+      else if (loggedUser.tipo === 'seller') setMenuOptions(seller);
       else setMenuOptions(buyer);
     }
 
